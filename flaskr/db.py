@@ -59,3 +59,30 @@ def close_db(e=None):
 
     if db is not None:
         db.close()
+
+
+def init_db():
+    """
+    Connects to database and executes commands from 'schema.sql',
+    which creates fresh 'user' and 'post' tables.
+    """
+    # get a database connection and use it to execute commands from schema.sql.
+    db = get_db()
+
+    # 'open_resource' opens a file RELATIVE to the 'flaskr' package.
+    # This is useful because schema.sql's location won't necessarily be known
+    # when deploying.
+    with current_app.open_resource('schema.sql') as f:
+        db.executescript(f.read().decode('utf8'))
+
+
+# 'click.command()' defines a command line command called init-db
+# that calls the init_db function and shows a success message to the user.
+@click.command('init-db')
+@with_appcontext
+def init_db_command():
+    """
+    Clear the existing data and create new tables.
+    """
+    init_db()
+    click.echo('Initialized the database.')
