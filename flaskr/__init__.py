@@ -52,6 +52,6 @@ def create_app(test_config=None):
 
     # register app with the database
     from . import db
-    db.init_app(db)
+    db.init_app(app)
 
     return app
