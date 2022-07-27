@@ -50,4 +50,8 @@ def create_app(test_config=None):
     def hello():
         return 'Hello, world!'
 
+    # register app with the database
+    from . import db
+    db.init_app(db)
+
     return app

@@ -86,3 +86,16 @@ def init_db_command():
     """
     init_db()
     click.echo('Initialized the database.')
+
+
+# The 'close_db()' and 'init_db_command()' functions need to be registered with
+# the application instance, or else they won't be used by the application.
+# HOWEVER, we are using a factory function to create the app (create_app()),
+# an application instance isn't available when writing the functions.
+# Instead, have a  function take an app instance and do the registration.
+
+def init_app(app):
+    # tell flask to call 'close_db' when cleaning up after returning a response
+    app.teardown_appcontext(close_db)
+    # add new command that can be called with the flask command
+    app.cli.add_command(init_db_command)
