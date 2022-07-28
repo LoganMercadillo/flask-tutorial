@@ -75,3 +75,34 @@ def register():
 
     # initial display ('GET' request) or validation error
     return render_template('auth/register.html')
+
+
+# LOGIN VIEW
+@bp.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        db = get_db()
+        error = None
+        user = db.execute(
+            'SELECT * FROM user WHERE username = ?', (username,)
+        ).fetchone()
+
+        if user is None:
+            error = 'Incorrect username.'
+        elif not check_password_hash(user['password'], password):
+            error = 'Incorrect password'
+
+        if error is None:
+            # session is a dict that stores data across requests.
+            # if validation success, store user id in a new session.
+            session.clear()
+            session['user_id'] = user['id']
+            # now that user id is stored in the session, it is available
+            # to be used for subsequent requests.
+            return redirect(url_for('index'))
+
+        flash(error)
+
+    return render_template('auth/login.html')
