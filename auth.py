@@ -125,3 +125,26 @@ def load_logged_in_user():
         g.user = get_db().execute(
             'SELECT * FROM user WHERE id = ?', (user_id,)
         ).fetchone()
+
+
+# LOGOUT VIEW
+@bp.route('/logout')
+def logout():
+    """Clears current session and redirects to index page"""
+    session.clear()
+    return redirect(url_for('index'))
+
+
+# Creating, editing, and deleting blog posts requires users to be logged in.
+def login_required(view):
+    # 'functools.wraps' decorator returns a new view function that wraps
+    # the original view it's applied to.
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        # Checks if user is loaded, redirects to login page if not
+        if g.user is None:
+            return redirect(url_for('auth.login'))
+        # If logged in, original view is called
+        return view(**kwargs)
+
+    return wrapped_view
