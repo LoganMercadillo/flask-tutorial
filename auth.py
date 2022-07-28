@@ -1,4 +1,3 @@
-# NOTE:
 # A "view function" is the code that you write in order to respond to requests
 # to your application.
 #
@@ -24,6 +23,11 @@
 #
 # Flaskr has two blueprints, one for handling authentication functions
 # and another for handling blog post functions.
+#
+# NOTE:
+# When using a blueprint, the name of the blueprint is prepended to
+# the name of the function, so the endpoint for the login function
+# is 'auth.login' because you added it to the 'auth' blueprint.
 #
 # TLDR: THIS IS THE AUTHENTICATION BLUEPRINT.
 
