@@ -106,3 +106,22 @@ def login():
         flash(error)
 
     return render_template('auth/login.html')
+
+
+# At the BEGINNING of each request (for any URL and before any other action),
+# if user is logged in then their info should be loaded
+# and be made available to other views.
+@bp.before_app_request
+def load_logged_in_user():
+    """
+    Check if a user id is stored in session, and if so, stores it in g.user.
+    g.user lasts the length of the request.
+    """
+    user_id = session.get('user_id')
+
+    if user_id is None:
+        g.user = None
+    else:
+        g.user = get_db().execute(
+            'SELECT * FROM user WHERE id = ?', (user_id,)
+        ).fetchone()
