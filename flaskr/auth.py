@@ -145,10 +145,11 @@ def login_required(view):
     # the original view it's applied to.
     @functools.wraps(view)
     def wrapped_view(**kwargs):
-        # Checks if user is loaded, redirects to login page if not
+        # Checks if user is loaded
         if g.user is None:
+            # redirects to login page if no user is logged in
             return redirect(url_for('auth.login'))
-        # If logged in, original view is called
+        # original view is called if a user is logged in
         return view(**kwargs)
 
     return wrapped_view
