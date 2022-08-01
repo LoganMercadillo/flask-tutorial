@@ -60,7 +60,7 @@ def create_app(test_config=None):
     app.register_blueprint(blog.bp)
     # associate the endpoint name 'index' with the '/' url so that
     # url_for('index') or url_for('blog.index') will both work,
-    # generating the same / URL either way.
+    # generating the same '/' URL either way.
     app.add_url_rule('/', endpoint="index")
 
     return app
