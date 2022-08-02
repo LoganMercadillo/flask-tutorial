@@ -73,14 +73,17 @@ class AuthActions(object):
 
     def login(self, username='test', password='test'):
         return self._client.post(
-            'auth/login',
+            '/auth/login',
             data={'username': username, 'password': password}
         )
 
     def logout(self):
-        return self._client.get('auth/logout')
+        return self._client.get('/auth/logout')
 
 
+# With the 'auth' fixture, we can call 'auth.login()' in a test to log in
+# as the 'test' user (which was inserted as part of the test data in the
+# 'app' fixture).
 @pytest.fixture
 def auth(client):
     """
