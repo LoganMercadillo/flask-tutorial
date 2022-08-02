@@ -59,3 +59,32 @@ def client(app):
 @pytest.fixture
 def runner(app):
     return app.test_cli_runner()
+
+
+# For most of the views, a user needs to be logged in.
+# Easiest way to do this in tests is to make a 'POST' request to the 'login'
+# view with the client.
+# Instead of writing that request out everytime we need to do it, we can
+# write a class with methods to do that, and use a fixture to pass the client
+# to the class for each test.
+class AuthActions(object):
+    def __init__(self, client):
+        self._client = client
+
+    def login(self, username='test', password='test'):
+        return self._client.post(
+            'auth/login',
+            data={'username': username, 'password': password}
+        )
+
+    def logout(self):
+        return self._client.get('auth/logout')
+
+
+@pytest.fixture
+def auth(client):
+    """
+    Passes the given client to the class with methods for
+    making 'POST' requests to the 'login' view.
+    """
+    return AuthActions(client)
