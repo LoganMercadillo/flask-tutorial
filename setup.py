@@ -1,4 +1,4 @@
-from Jinja2 import TemplateRuntimeError
+from jinja2 import TemplateRuntimeError
 from setuptools import find_packages, setup
 
 setup(
