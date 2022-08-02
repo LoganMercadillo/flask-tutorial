@@ -5,6 +5,7 @@ from flaskr.db import get_db
 # client.get() makes a 'GET' request & returns the Response object from Flask.
 # client.post() makes a 'POST' request, converting 'data' dict into form data.
 
+
 def test_register(client, app):
     # If rendering the page fails, Flask would return a
     # '500 Internal Server Error' code.
